@@ -1,3 +1,30 @@
+Admin & User Dashboard
+
+## 📘 Deskripsi
+
+Project ini adalah aplikasi dashboard berbasis **Next.js** yang dibangun untuk mendukung dua jenis role: **Admin** dan **User**. Tujuan utama dari project ini adalah menyediakan interface CRUD yang lengkap dengan fitur filtering, pagination, dan upload gambar. Cocok untuk keperluan CMS atau dashboard manajemen konten.
+
+## 🚀 Teknologi yang Digunakan
+
+- **Next.js** – Framework React untuk rendering server dan routing
+- **TanStack Query** – Untuk manajemen data asynchronous (fetching, caching)
+- **React Hook Form** – Untuk mengelola form dan validasi
+- **Zod** – Schema-based validation
+- **Axios** – HTTP client untuk komunikasi API
+- **React Hot Toast** – Notifikasi ringan
+- **Tailwind CSS & ShadcnUi** – Utility-first styling
+- **Vercel** – Platform deployment (akan digunakan)
+
+## ✨ Fitur Utama
+
+- ✅ Authentication berdasarkan role (`Admin`, `User`)
+- ✅ CRUD Data (Create, Read, Update, Delete)
+- ✅ Filter dan Pagination untuk data list
+- ✅ Upload Gambar dengan preview
+- ✅ Validasi form dengan Zod
+- ✅ Modular dan reusable component design
+- ✅ Responsive dan user-friendly UI
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
