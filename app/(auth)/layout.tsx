@@ -9,7 +9,7 @@ const layout = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      router.push('/');
+      router.push('/articles');
     }
   }, [router]);
 
