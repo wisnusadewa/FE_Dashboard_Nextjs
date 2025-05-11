@@ -63,7 +63,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
   const isLogin = type === 'login';
 
   return (
-    <div className={`neomorph ${!isLogin ? 'w-[343px] h-[420px] md:h-[500px] md:w-[400px] ' : 'w-[343px] h-[420px] md:h-[500px] md:w-[400px]'} flex flex-col gap-6`}>
+    <div className={`neomorph ${!isLogin ? 'w-[343px] h-full pb-10 md:h-[500px] md:w-[400px] ' : 'w-[343px] h-[420px] md:h-[500px] md:w-[400px]'} flex flex-col gap-6`}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full px-[16px] ">
           <div className="w-full flex justify-center items-center mt-[40px] mb-[24px]">

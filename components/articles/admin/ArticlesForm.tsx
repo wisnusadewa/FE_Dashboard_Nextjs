@@ -38,11 +38,19 @@ const ArticlesForm = () => {
   // upload thumbnail
   const uploadThumbnail = async (file: File): Promise<string> => {
     const formData = new FormData();
-    formData.append('file', file);
-
-    const response = await axiosInstance.post('/upload', formData);
-    console.log('isi uploadThumbnail', response.data);
-    return response.data.imageUrl;
+    formData.append('image', file);
+    try {
+      const response = await axiosInstance.post('/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('isi uploadThumbnail', response.data);
+      return response.data.imageUrl;
+    } catch (err) {
+      console.log('error:', err);
+      throw err;
+    }
   };
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,14 +58,18 @@ const ArticlesForm = () => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
       setPreview(objectUrl);
+      form.setValue('imageUrl', file);
     }
   };
 
   const onSubmit = async (data: FormSchema) => {
     let thumbnailUrl: string | undefined = undefined;
 
-    if (data.imageUrl) {
-      await uploadThumbnail(data.imageUrl);
+    if (data.imageUrl instanceof File) {
+      thumbnailUrl = await uploadThumbnail(data.imageUrl);
+    } else if (typeof data.imageUrl === 'string') {
+      //  Gambar lama dari backend
+      thumbnailUrl = data.imageUrl;
     }
 
     await createArticlesMutation.mutateAsync({
@@ -69,8 +81,8 @@ const ArticlesForm = () => {
 
     router.push('/articles');
 
-    console.log('Submitted:', data);
-    console.log(thumbnailUrl);
+    // console.log('Submitted:', data);
+    // console.log(thumbnailUrl);
   };
 
   return (
@@ -88,7 +100,7 @@ const ArticlesForm = () => {
         <div className="space-y-6 border rounded-md p-6 bg-white h-[50vh]">
           <h1 className="text-2xl font-bold">Title : {form.watch('title')}</h1>
           <p className="text-muted-foreground">Category: {form.watch('categoryId')}</p>
-          {preview && <Image src={preview} alt="Thumbnail Preview" width={300} height={300} className="rounded w-full" />}
+          {preview && <Image src={preview} alt="imageUrl Preview" width={300} height={300} className="rounded w-full" />}
           <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: form.watch('content') }} />
         </div>
       ) : (
@@ -96,16 +108,16 @@ const ArticlesForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full w-full gap-5">
             {/* Thumbnail */}
             <div className="flex flex-col gap-2 ">
-              <Label htmlFor="thumbnail">Thumbnail</Label>
+              <Label htmlFor="imageUrl">Thumbnail</Label>
 
               {preview ? (
                 <div>
-                  <Input id="thumbnail" type="file" accept="image/*" onChange={handleThumbnailChange} className="w-[223px] h-[163px] hidden" />
+                  <Input id="imageUrl" type="file" accept="image/*" onChange={handleThumbnailChange} className="w-[223px] h-[163px] hidden" />
                   {preview && <Image src={preview} alt="preview" width={200} height={120} className="mt-2 rounded" />}
                 </div>
               ) : (
                 <div>
-                  <Input id="thumbnail" type="file" accept="image/*" onChange={handleThumbnailChange} className="w-[223px] h-[163px]" />
+                  <Input id="imageUrl" type="file" accept="image/*" onChange={handleThumbnailChange} className="w-[223px] h-[163px]" />
                 </div>
               )}
 
@@ -122,7 +134,7 @@ const ArticlesForm = () => {
                       form.setValue('imageUrl', undefined);
 
                       // Clear value in input file (reset file input)
-                      const fileInput = document.getElementById('thumbnail') as HTMLInputElement;
+                      const fileInput = document.getElementById('imageUrl') as HTMLInputElement;
                       if (fileInput) fileInput.value = '';
                     }}
                     className="font-normal text-[12px] bg-transparent text-red-500 shadow-none hover:bg-transparent underline underline-offset-2"
@@ -144,8 +156,8 @@ const ArticlesForm = () => {
             </div>
 
             {/* text area */}
-            <div className="h-[551px] w-full flex flex-col gap-2 rounded-none rounded-b-[12px]">
-              <FormField name="content" label="Content" placeholder="Type a content" control={form.control} />
+            <div className=" w-full flex flex-col gap-2 rounded-none rounded-b-[12px]">
+              <FormField type="textarea" name="content" label="Content" placeholder="Type a content" control={form.control} classNameInput="h-[551px] flex justify-start" />
             </div>
 
             {/* Buttons */}
@@ -158,7 +170,9 @@ const ArticlesForm = () => {
                   Preview
                 </Button>
               )}
-              <Button type="submit">Upload</Button>
+              <Button disabled={form.formState.isSubmitting} type="submit">
+                {form.formState.isSubmitting ? 'Uploading' : 'Upload'}
+              </Button>
             </div>
           </form>
         </Form>

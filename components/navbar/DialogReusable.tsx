@@ -20,13 +20,16 @@ interface DialogReusableProps {
 
 const DialogReusable = ({ handleLogout, textButton, titleTriger, titleTrigerClassName, titleHeader, textDialogDescription, classNameButton, isLogout, handleDeleteArticle, isDeleteArticles }: DialogReusableProps) => {
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleConfirm = () => {
     if (isLogout) {
       handleLogout?.();
       setOpen(false);
     } else if (isDeleteArticles) {
+      setIsLoading(true);
       handleDeleteArticle?.();
+      setIsLoading(false);
       setOpen(false);
     }
   };
@@ -47,7 +50,7 @@ const DialogReusable = ({ handleLogout, textButton, titleTriger, titleTrigerClas
             <Button className="bg-white text-black border hover:bg-gray-100/80" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button className={classNameButton} onClick={handleConfirm}>
+            <Button disabled={isLoading} className={classNameButton} onClick={handleConfirm}>
               {textButton}
             </Button>
           </DialogFooter>

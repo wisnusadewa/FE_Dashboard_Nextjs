@@ -32,7 +32,7 @@ const EditForm = () => {
     },
   });
 
-  //   console.log('paramsId??', paramsId);
+  // console.log('id articles??', id);
 
   // Category dari articles
   const { getArticlesByIdQuery, editArticlesMutation } = useArticles();
@@ -50,9 +50,9 @@ const EditForm = () => {
       });
 
       // Cek isi formData
-      for (const [key, value] of formData.entries()) {
-        console.log('form data field:', key, value);
-      }
+      // for (const [key, value] of formData.entries()) {
+      //   console.log('form data field:', key, value);
+      // }
 
       console.log('isi uploadImageUrl', response.data.imageUrl);
       return response.data.imageUrl;
@@ -89,7 +89,7 @@ const EditForm = () => {
     console.log('thumbnailUrl ???', thumbnailUrl);
 
     await editArticlesMutation.mutateAsync({
-      id: data.id,
+      id,
       categoryId: data.categoryId,
       content: data.content,
       title: data.title,
@@ -104,7 +104,6 @@ const EditForm = () => {
   useEffect(() => {
     if (articlesDataId) {
       form.reset({
-        id: articlesDataId.id,
         categoryId: articlesDataId.category.id,
         title: articlesDataId.title,
         content: articlesDataId.content,

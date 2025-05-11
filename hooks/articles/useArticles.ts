@@ -48,6 +48,7 @@ const useArticles = () => {
     mutationFn: deleteArticles,
     onSuccess: (id) => {
       queryClient.invalidateQueries({ queryKey: ['articles', id] });
+      toast.success('deleting success!');
     },
   });
 

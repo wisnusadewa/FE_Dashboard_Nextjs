@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const formSchema = z.object({
-  id: z.string(),
+  // id: z.string(),
   title: z.string().min(1, 'Please enter title'),
   categoryId: z.string().min(1, 'Please select category'),
   imageUrl: z

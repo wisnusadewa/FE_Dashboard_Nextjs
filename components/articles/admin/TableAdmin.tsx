@@ -33,7 +33,6 @@ const TableAdmin = ({ allArticle, isCategoryPage, allCategories }: TableAdminPro
     deleteArticlesMutation.mutate(id);
   };
 
-  if (deleteArticlesMutation.isPending) return <p>deleting data....</p>;
   return (
     <div>
       <Table>

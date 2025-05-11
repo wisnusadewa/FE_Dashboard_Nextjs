@@ -3,6 +3,7 @@ import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Textarea } from '../ui/textarea';
 
 interface Option {
   label: string;
@@ -14,11 +15,12 @@ interface FormFieldProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   placeholder?: string;
-  type?: 'text' | 'email' | 'password' | 'file ' | 'select';
+  type?: 'text' | 'email' | 'password' | 'file ' | 'select' | 'textarea';
   options?: Option[]; // untuk select
+  classNameInput?: string;
 }
 
-const FormFieldArticles = <T extends FieldValues>({ name, type = 'text', label, placeholder, control, options }: FormFieldProps<T>) => {
+const FormFieldArticles = <T extends FieldValues>({ name, type = 'text', label, placeholder, control, options, classNameInput }: FormFieldProps<T>) => {
   const { getAllArticlesQuery } = useArticles();
   const { data: articles } = getAllArticlesQuery();
 
@@ -46,7 +48,7 @@ const FormFieldArticles = <T extends FieldValues>({ name, type = 'text', label, 
                 </SelectContent>
               </Select>
             ) : (
-              <Input type={type} placeholder={placeholder} {...field} className="glass" />
+              <div>{type === 'textarea' ? <Textarea className={classNameInput} {...field} /> : <Input type={type} placeholder={placeholder} {...field} className={classNameInput} />}</div>
             )}
           </FormControl>
           <FormDescription />

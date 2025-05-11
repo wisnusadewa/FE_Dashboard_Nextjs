@@ -1,4 +1,3 @@
-import { toast } from 'sonner';
 import axiosInstance from './axios';
 
 export const getAllArticles = async ({ title = '', page = 1, limit = 10, categoryId }: ArticlesParams = {}): Promise<ArticlesResponse> => {
@@ -50,7 +49,6 @@ export const deleteArticles = async (id: string): Promise<string> => {
   try {
     const response = await axiosInstance.delete(`/articles/${id}`);
     console.log('data delete articles : ', response.data);
-    toast.success(response.data.message);
     return response.data;
   } catch (err) {
     console.log(err);
